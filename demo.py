@@ -18,7 +18,7 @@ password="password"
 
 # response=requests.post(url,json=post_data,auth=requests.auth.HTTPBasicAuth(username,password)).json()
 
-commands=[]
+commands=["echo airflow", "echo finarkein"]
 
 # for connection in response['connections']:
 #     commands.append("echo hello {}".format(connection['name']))
