@@ -27,15 +27,15 @@ commands=[]
 workers=3
 
 # A DAG represents a workflow, a collection of tasks
-with DAG(dag_id="demo_next_xiii", start_date=datetime(2024, 7, 26,14,33), schedule="*/1 * * * *",
+with DAG(dag_id="demo_DAG", 
                  params={"commands":Param(commands,type='array',title="Bash commands")},render_template_as_native_obj=True
  ) as dag:
     # Tasks are represented as operators
 
-    # tasks=BashOperator.partial(task_id='test',max_active_tis_per_dag=workers,map_index_template='{{task.bash_command}}').expand(bash_command=commands)
-
     hello = BashOperator(task_id="hello", bash_command="echo hello world")
 
+    tasks=BashOperator.partial(task_id='test',max_active_tis_per_dag=workers,map_index_template='{{task.bash_command}}').expand(bash_command=commands)
+    
     @task()
     def airflow1():
         time.sleep(5)
@@ -84,5 +84,5 @@ with DAG(dag_id="demo_next_xiii", start_date=datetime(2024, 7, 26,14,33), schedu
     bye = BashOperator(task_id="bye", bash_command="echo bye world")
 
     # Set dependencies between tasks
-    hello >> airflow1() >> airflow2() >> [airflow3(), airflow4(), airflow5(), airflow6(), airflow7(), airflow8(), airflow9()] >> bye
-    # tasks>>bye
+    # hello >> airflow1() >> airflow2() >> [airflow3(), airflow4(), airflow5(), airflow6(), airflow7(), airflow8(), airflow9()] >> bye
+    hello>>tasks>>bye
