@@ -18,7 +18,7 @@ password="password"
 
 # response=requests.post(url,json=post_data,auth=requests.auth.HTTPBasicAuth(username,password)).json()
 
-commands=["echo airflow", "echo finarkein"]
+commands=["echo airflow", "echo finarkein", "echo test", "echo development", "echo DAG", "echo kubernetes", "echo minikube"]
 
 # for connection in response['connections']:
 #     commands.append("echo hello {}".format(connection['name']))
@@ -27,8 +27,7 @@ commands=["echo airflow", "echo finarkein"]
 workers=3
 
 # A DAG represents a workflow, a collection of tasks
-with DAG(dag_id="demo_DAG", 
-                 params={"commands":Param(commands,type='array',title="Bash commands")},render_template_as_native_obj=True
+with DAG(dag_id="demo_DAG", params={"commands":Param(commands,type='array',title="Bash commands")},render_template_as_native_obj=True
  ) as dag:
     # Tasks are represented as operators
 
