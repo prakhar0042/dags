@@ -25,8 +25,8 @@ connections = {"d42ebce0-46ee-447b-bdd9-e3b30688cf0b":"Demo 6",
                "63a0f92d-6623-40cf-901f-e0160cedad0c":"Demo 7",
                "bb746c31-1b2d-4541-a4e6-6f413d3a87f9":"Demo 4"}
 
-# for connection in response["connections"]:
-#     connections[connection['connectionId']] = connection['name']
+for connection in response["connections"]:
+    connections[connection['connectionId']] = connection['name']
 
 workers = 2
 
@@ -42,16 +42,16 @@ with DAG(
         context = get_current_context()
         return list(context["params"]["connections"].keys())
 
-    # airbyte_call = AirbyteTriggerSyncOperator.partial(
-    #     task_id = "airbyte_call",
-    #     airbyte_conn_id = "airflow-call-to-airbyte-demo",
-    #     asynchronous = False,
-    #     max_active_tis_per_dag = "{{params.workers}}",
-    #     map_index_template = "{{params.connections[task.connection_id]}}",
-    # ).expand(connection_id = get_connection_ids())
+    airbyte_call = AirbyteTriggerSyncOperator.partial(
+        task_id = "airbyte_call",
+        airbyte_conn_id = "airflow-call-to-airbyte-demo",
+        asynchronous = False,
+        max_active_tis_per_dag = "{{params.workers}}",
+        map_index_template = "{{params.connections[task.connection_id]}}",
+    ).expand(connection_id = get_connection_ids())
 
     completion_output = BashOperator(
         task_id = "airbyte_completed_sync", bash_command="echo SYNC COMPLETED"
     )
 
-    # airbyte_call >> completion_output
+    airbyte_call >> completion_output
