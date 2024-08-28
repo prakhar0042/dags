@@ -8,7 +8,7 @@ from airflow.providers.airbyte.operators.airbyte import AirbyteTriggerSyncOperat
 from airflow.operators.python import get_current_context
 from airflow.models.param import Param
 
-url = "http://localhost:8000/api/v1/connections/list"
+url = "http://103.59.204.238:8000/api/v1/connections/list"
 post_data = {"workspaceId": "769fd779-88dd-40e2-8cc0-e0268dad9117"}
 username = "prakhar.srivastav@finarkein.com"
 password = "8DzIx1LqVNtWg5ekktIH9Ys985LfwPVL"
