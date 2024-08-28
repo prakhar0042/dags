@@ -13,9 +13,9 @@ post_data = {"workspaceId": "769fd779-88dd-40e2-8cc0-e0268dad9117"}
 username = "prakhar.srivastav@finarkein.com"
 password = "8DzIx1LqVNtWg5ekktIH9Ys985LfwPVL"
 
-# response = requests.post(
-#     url, json = post_data, auth = requests.auth.HTTPBasicAuth(username, password)
-# ).json()
+response = requests.post(
+    url, json = post_data, auth = requests.auth.HTTPBasicAuth(username, password)
+).json()
 
 connections = {"d42ebce0-46ee-447b-bdd9-e3b30688cf0b":"Demo 6",
                "d7f499f1-315d-4f6b-8137-7be948c6ab3f":"Demo 1",
@@ -42,16 +42,16 @@ with DAG(
         context = get_current_context()
         return list(context["params"]["connections"].keys())
 
-    airbyte_call = AirbyteTriggerSyncOperator.partial(
-        task_id = "airbyte_call",
-        airbyte_conn_id = "airflow-call-to-airbyte-demo",
-        asynchronous = False,
-        max_active_tis_per_dag = "{{params.workers}}",
-        map_index_template = "{{params.connections[task.connection_id]}}",
-    ).expand(connection_id = get_connection_ids())
+    # airbyte_call = AirbyteTriggerSyncOperator.partial(
+    #     task_id = "airbyte_call",
+    #     airbyte_conn_id = "airflow-call-to-airbyte-demo",
+    #     asynchronous = False,
+    #     max_active_tis_per_dag = "{{params.workers}}",
+    #     map_index_template = "{{params.connections[task.connection_id]}}",
+    # ).expand(connection_id = get_connection_ids())
 
     completion_output = BashOperator(
         task_id = "airbyte_completed_sync", bash_command="echo SYNC COMPLETED"
     )
 
-    airbyte_call >> completion_output
+    # airbyte_call >> completion_output
